@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradise Nursery - Online Plant Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background-color: #2e7d32 !important;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .plant-card {
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .plant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .plant-img {
+            height: 200px;
+            object-fit: cover;
+        }
+        .section-title {
+            border-bottom: 3px solid #2e7d32;
+            padding-bottom: 10px;
+            margin: 30px 0;
+            display: inline-block;
+        }
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        .cart-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .btn-quantity {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff5722;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        footer {
+            background-color: #2e7d32;
+            color: white;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Paradise Nursery</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">Plants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-cart3"></i>
+                            <span class="cart-badge" id="cartCount">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content (changes based on page) -->
+    <div class="container mb-5" id="main-content">
+        <!-- Content will be dynamically loaded here -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <p>&copy; 2023 Paradise Nursery. All rights reserved.</p>
+            <p>Bringing nature's beauty to your home</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Plant data
+        const plants = [
+            {
+                id: 1,
+                name: "Lavender",
+                description: "Fragrant purple flowers known for their calming aroma and medicinal properties.",
+                price: 12.99,
+                image: "https://images.unsplash.com/photo-1599705149095-32a78b24d345?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                category: "Aromatic"
+            },
+            {
+                id: 2,
+                name: "Aloe Vera",
+                description: "Succulent plant with medicinal gel inside its leaves, great for skin care.",
+                price: 9.99,
+                image: "https://images.unsplash.com/photo-1525498128493-380d1990a112?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                category: "Medicinal"
+            },
+            {
+                id: 3,
+                name: "Rosemary",
+                description: "Aromatic herb with needle-like leaves, commonly used in cooking and for its fragrance.",
+                price: 11.50,
+                image: "https://images.unsplash.com/photo-1513530176992-9d8ceae58992?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                category: "Aromatic"
+            },
+            {
+                id: 4,
+                name: "Peppermint",
+                description: "Refreshing aromatic herb known for its digestive benefits and cooling sensation.",
+                price: 8.99,
+                image: "https://images.unsplash.com/photo-1590433598453-ec5d8b164d5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                category: "Medicinal"
+            },
+            {
+                id: 5,
+                name: "Snake Plant",
+                description: "Hardy indoor plant with upright leaves that purifies the air and requires little maintenance.",
+                price: 18.99,
+                image: "https://images.unsplash.com/photo-1586500036706-41963b101644?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                category: "Indoor"
+            },
+            {
+                id: 6,
+                name: "Eucalyptus",
+                description: "Fast-growing tree with aromatic leaves often used in aromatherapy and medicinal preparations.",
+                price: 14.75,
+                image: "https://images.unsplash.com/photo-1597589827317-4c6d6e0a90bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                category: "Aromatic"
+            },
+            {
+                id: 7,
+                name: "Turmeric Plant",
+                description: "Herbaceous plant whose roots are used as a spice and have anti-inflammatory properties.",
+                price: 13.25,
+                image: "https://images.unsplash.com/photo-1594135716583-9496eb871d42?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                category: "Medicinal"
+            },
+            {
+                id: 8,
+                name: "Peace Lily",
+                description: "Popular indoor plant with elegant white flowers that helps purify the air.",
+                price: 22.99,
+                image: "https://images.unsplash.com/photo-1593483316242-27b5c5d4ae2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                category: "Indoor"
+            }
+        ];
+
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        function addToCart(plantId) {
+            const plant = plants.find(p => p.id === plantId);
+            const existingItem = cart.find(item => item.id === plantId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: plant.id,
+                    name: plant.name,
+                    price: plant.price,
+                    image: plant.image,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(`${plant.name} added to cart!`);
+        }
+
+        function removeFromCart(plantId) {
+            cart = cart.filter(item => item.id !== plantId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCartPage();
+        }
+
+        function updateQuantity(plantId, change) {
+            const item = cart.find(item => item.id === plantId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(plantId);
+                    return;
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                renderCartPage();
+            }
+        }
+
+        // Routing and page rendering
+        function renderHomePage() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="hero-section rounded mb-5">
+                    <div>
+                        <h1 class="display-4 fw-bold">Welcome to Paradise Nursery</h1>
+                        <p class="lead">Discover the perfect plants to bring life and beauty to your home</p>
+                        <a href="products.html" class="btn btn-success btn-lg mt-3">Explore Our Plants</a>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Aromatic Plants">
+                            <div class="card-body">
+                                <h3 class="card-title">Aromatic Plants</h3>
+                                <p class="card-text">Fill your home with natural fragrances that uplift your mood and create a relaxing atmosphere.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="https://images.unsplash.com/photo-1589923188937-cb64779f4abe?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Medicinal Plants">
+                            <div class="card-body">
+                                <h3 class="card-title">Medicinal Plants</h3>
+                                <p class="card-text">Natural remedies at your fingertips with our selection of healing and therapeutic plants.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="https://images.unsplash.com/photo-1517191434949-5e90cd67d2b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Indoor Plants">
+                            <div class="card-body">
+                                <h3 class="card-title">Indoor Plants</h3>
+                                <p class="card-text">Transform your living space with our easy-to-care-for indoor plants that purify the air and add beauty.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProductsPage() {
+            const aromaticPlants = plants.filter(plant => plant.category === "Aromatic");
+            const medicinalPlants = plants.filter(plant => plant.category === "Medicinal");
+            const indoorPlants = plants.filter(plant => plant.category === "Indoor");
+            
+            document.getElementById('main-content').innerHTML = `
+                <h2 class="text-center my-5">Our Plant Collection</h2>
+                
+                <h3 class="section-title">Aromatic Plants</h3>
+                <div class="row mb-5">
+                    ${aromaticPlants.map(plant => `
+                        <div class="col-md-6 col-lg-3 mb-4">
+                            <div class="card plant-card">
+                                <img src="${plant.image}" class="card-img-top plant-img" alt="${plant.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${plant.name}</h5>
+                                    <p class="card-text">${plant.description}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-success">$${plant.price.toFixed(2)}</span>
+                                        <button class="btn btn-sm btn-outline-success" onclick="addToCart(${plant.id})">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <h3 class="section-title">Medicinal Plants</h3>
+                <div class="row mb-5">
+                    ${medicinalPlants.map(plant => `
+                        <div class="col-md-6 col-lg-3 mb-4">
+                            <div class="card plant-card">
+                                <img src="${plant.image}" class="card-img-top plant-img" alt="${plant.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${plant.name}</h5>
+                                    <p class="card-text">${plant.description}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-success">$${plant.price.toFixed(2)}</span>
+                                        <button class="btn btn-sm btn-outline-success" onclick="addToCart(${plant.id})">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <h3 class="section-title">Indoor Plants</h3>
+                <div class="row mb-5">
+                    ${indoorPlants.map(plant => `
+                        <div class="col-md-6 col-lg-3 mb-4">
+                            <div class="card plant-card">
+                                <img src="${plant.image}" class="card-img-top plant-img" alt="${plant.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${plant.name}</h5>
+                                    <p class="card-text">${plant.description}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-success">$${plant.price.toFixed(2)}</span>
+                                        <button class="btn btn-sm btn-outline-success" onclick="addToCart(${plant.id})">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderCartPage() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.getElementById('main-content').innerHTML = `
+                <h2 class="my-5 text-center">Your Shopping Cart</h2>
+                
+                ${cart.length === 0 ? `
+                    <div class="text-center py-5">
+                        <i class="bi bi-cart-x" style="font-size: 3rem;"></i>
+                        <h3 class="mt-3">Your cart is empty</h3>
+                        <p>Explore our plants and add something special to your cart!</p>
+                        <a href="products.html" class="btn btn-success">Continue Shopping</a>
+                    </div>
+                ` : `
+                    <div class="row">
+                        <div class="col-lg-8">
+                            ${cart.map(item => `
+                                <div class="cart-item d-flex align-items-center">
+                                    <img src="${item.image}" class="cart-img me-3" alt="${item.name}">
+                                    <div class="flex-grow-1">
+                                        <h5>${item.name}</h5>
+                                        <p class="mb-0">$${item.price.toFixed(2)} each</p>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-sm btn-outline-secondary btn-quantity me-2" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                        <span class="mx-2">${item.quantity}</span>
+                                        <button class="btn btn-sm btn-outline-secondary btn-quantity ms-2" onclick="updateQuantity(${item.id}, 1)">+</button>
+                                        <span class="mx-3 fw-bold">$${(item.price * item.quantity).toFixed(2)}</span>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${item.id})">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="card sticky-top" style="top: 100px;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Order Summary</h5>
+                                    ${cart.map(item => `
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>${item.name} x${item.quantity}</span>
+                                            <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                                        </div>
+                                    `).join('')}
+                                    <hr>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <strong>Total</strong>
+                                        <strong>$${total.toFixed(2)}</strong>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <a href="products.html" class="btn btn-outline-success">Continue Shopping</a>
+                                        <button class="btn btn-success">Proceed to Checkout</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `}
+            `;
+        }
+
+        // Simple router
+        function router() {
+            const path = window.location.pathname;
+            const page = path.split("/").pop();
+            
+            if (page === "products.html") {
+                renderProductsPage();
+            } else if (page === "cart.html") {
+                renderCartPage();
+            } else {
+                renderHomePage();
+            }
+            
+            updateCartCount();
+        }
+
+        // Initialize
+        document.addEventListener("DOMContentLoaded", function() {
+            router();
+            
+            // Handle navigation
+            document.querySelectorAll(".nav-link").forEach(link => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute("href");
+                    window.history.pushState({}, "", href);
+                    router();
+                });
+            });
+            
+            // Handle browser back/forward buttons
+            window.addEventListener("popstate", router);
+        });
+    </script>
+</body>
+</html>
